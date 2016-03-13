@@ -243,17 +243,21 @@ class SCSS(base.BaseCompiler):
                     return path
                 except ValueError:
                     pass
-
         raise exceptions.StaticCompilationError("Can't locate the imported file: {0}".format(import_path))
 
     def find_dependencies(self, source_path):
         source = self.get_source(source_path)
         source_dir = posixpath.dirname(source_path)
+
+        all_paths = list(self.load_paths)
+        all_paths.append(source_dir)
         dependencies = set()
-        for import_path in self.find_imports(source):
-            import_path = self.locate_imported_file(source_dir, import_path)
-            dependencies.add(import_path)
-            dependencies.update(self.find_dependencies(import_path))
+        for path in all_paths:
+            for import_path in self.find_imports(path):
+                import_path = self.locate_imported_file(
+                    source_dir, import_path)
+                dependencies.add(import_path)
+                dependencies.update(self.find_dependencies(import_path))
         return sorted(dependencies)
 
 
