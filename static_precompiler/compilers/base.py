@@ -1,3 +1,4 @@
+import fnmatch
 import logging
 import os
 import posixpath
@@ -141,6 +142,16 @@ class BaseCompiler(object):
 
         if compiled_mtime <= self.get_source_mtime(source_path):
             return True
+
+        path = os.path.dirname(self.get_full_source_path(source_path))
+        matches = []
+        pattern = '*.{}'.format(self.input_extension)
+        for root, dirnames, filenames in os.walk(path):
+            for filename in fnmatch.filter(filenames, pattern):
+                matches.append(os.path.join(root, filename))
+        max_time = max(os.stat(p).st_mtime for p in matches)
+        if compiled_mtime <= max_time:
+                    return True
 
         if self.supports_dependencies:
             for dependency in self.get_dependencies(source_path):
