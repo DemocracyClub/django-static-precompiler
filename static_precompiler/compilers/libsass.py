@@ -64,8 +64,7 @@ class SCSS(scss.SCSS):
         compiled = encoding.force_str(compiled)
         sourcemap = encoding.force_str(sourcemap)
 
-        with open(full_output_path, "w+") as output_file:
-            output_file.write(compiled)
+        utils.write_file(compiled, full_output_path)
 
         utils.convert_urls(full_output_path, source_path)
 

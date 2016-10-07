@@ -63,6 +63,20 @@ def get_mtime_cachekey(filename):
     return get_cache_key("mtime.{0}".format(get_hexdigest(filename)))
 
 
+def write_file(content, path):
+    """ Write unicode content to a file. """
+
+    # Convert to unicode
+    content = encoding.force_text(content)
+
+    if six.PY2:
+        with open(path, "w+") as file_object:
+            file_object.write(content.encode(django.conf.settings.FILE_CHARSET))
+    else:
+        with open(path, "w+", encoding=django.conf.settings.FILE_CHARSET) as file_object:
+            file_object.write(content)
+
+
 def get_mtime(filename):
     if settings.MTIME_DELAY:
         key = get_mtime_cachekey(filename)
