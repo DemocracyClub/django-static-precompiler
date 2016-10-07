@@ -154,10 +154,10 @@ url_converter = URLConverter()
 
 
 def convert_urls(compiled_full_path, source_path):
-    with open(compiled_full_path, "r+") as compiled_file:
-        content = compiled_file.read()
-    with open(compiled_full_path, "w") as compiled_file:
-        compiled_file.write(url_converter.convert(content, source_path))
+    compiled_file = read_file(compiled_full_path)
+    content = compiled_file.read()
+    compiled_file = write_file(compiled_full_path)
+    compiled_file.write(url_converter.convert(content, source_path))
 
 
 def build_compilers():
