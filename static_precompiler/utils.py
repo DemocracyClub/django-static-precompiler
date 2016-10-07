@@ -155,7 +155,8 @@ url_converter = URLConverter()
 
 def convert_urls(compiled_full_path, source_path):
     content = read_file(compiled_full_path)
-    write_file(url_converter.convert(content, source_path))
+    converted_content = url_converter.convert(content, source_path)
+    write_file(converted_content, compiled_full_path)
 
 
 def build_compilers():
