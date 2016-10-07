@@ -68,12 +68,6 @@ class SCSS(scss.SCSS):
 
         utils.convert_urls(full_output_path, source_path)
 
-        if self.is_sourcemap_enabled:
-            with open(sourcemap_path, "w+") as output_file:
-                output_file.write(sourcemap)
-
-            utils.fix_sourcemap(sourcemap_path, source_path, full_output_path)
-
         return self.get_output_path(source_path)
 
     def compile_source(self, source):

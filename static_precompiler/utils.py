@@ -63,6 +63,16 @@ def get_mtime_cachekey(filename):
     return get_cache_key("mtime.{0}".format(get_hexdigest(filename)))
 
 
+def read_file(path):
+    """ Return the contents of a file as unicode. """
+    if six.PY2:
+        with open(path) as file_object:
+            return file_object.read().decode(django.conf.settings.FILE_CHARSET)
+    else:
+        with open(path, encoding=django.conf.settings.FILE_CHARSET) as file_object:
+            return file_object.read()
+
+
 def write_file(content, path):
     """ Write unicode content to a file. """
 
